@@ -9,12 +9,11 @@ import android.app.NotificationManager
 
 import android.app.Notification
 import android.content.Context
+import android.content.pm.PackageManager
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.NotificationCompat
-
-
-
-
+import android.widget.ArrayAdapter
+import android.widget.Toast
 
 
 class NotificationExample : AppCompatActivity() {
@@ -40,6 +39,21 @@ class NotificationExample : AppCompatActivity() {
                 .build()
 
             notificationManager!!.notify(1, notification)
+
+            val pm = packageManager
+            val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
+             val arrayList = arrayListOf<String>()
+            val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList)
+             for (packageInfo in packages) {
+            arrayList.add(packageInfo.packageName)
+            // Log.d(TAG, "Installed package :" + packageInfo.packageName)
+            // Log.d(TAG, "Source dir : " + packageInfo.sourceDir)
+            // Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName)!!)
+        }
+        list_view.adapter = arrayAdapter
+        Toast.makeText(this, arrayAdapter.count.toString(), Toast.LENGTH_SHORT).show()
+
+
 
 
         }
